@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "mpirun -np $2 staroc-bin $1"
+mpirun -np $2 staroc-bin $1 
