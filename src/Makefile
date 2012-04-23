@@ -1,7 +1,7 @@
 all:my-pic staroc deploy
 
-run:
-	cd run
+run: deploy
+	cd run/
 	./staroc my-pic 4
 	cd ..
 
@@ -15,13 +15,13 @@ my-pic: my-pic/*.c
 	cd ..
 
 staroc: staroc.c master slave
-	mpicc -c staroc.c
-	mpicc master.o slave.o staroc.o -o staroc-bin
+	mpicc -c staroc.c -Wall
+	mpicc master.o slave.o staroc.o -o staroc-bin -Wall
 
 master: master.c
-	mpicc -c master.c 
+	mpicc -c master.c  -Wall
 slave:  slave.c
-	mpicc -c slave.c
+	mpicc -c slave.c -Wall
 clean:
 	rm -rf staroc-bin *.o
 

@@ -1,0 +1,17 @@
+STAROC task my-pic started at Wed Apr 11 22:03:32 2012
+
+Send task 1 to node 1 at Wed Apr 11 22:03:32 2012
+Send task 2 to node 2 at Wed Apr 11 22:03:32 2012
+Send task 3 to node 3 at Wed Apr 11 22:03:32 2012
+Node 1 finish task:Total(1),SUCCESS(1),FAILED(0). Success: 1;
+Send task 4 to node 1 at Wed Apr 11 22:03:32 2012
+Node 2 finish task:Total(1),SUCCESS(1),FAILED(0). Success: 2;
+Node 1 finish task:Total(1),SUCCESS(1),FAILED(0). Success: 4;
+Node 3 finish task:Total(1),SUCCESS(1),FAILED(0). Success: 3;
+
+STAROC task my-pic ended at Wed Apr 11 22:03:32 2012
+Reason: Success
+Complete Task List:
+1 2 3 4 
+Failed Task List:
+
