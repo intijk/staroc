@@ -29,7 +29,7 @@ void slave_init(){
 pid_t startTask(int taskNum){
 	pid_t ret=fork();
 	char taskNumString[MAX_LENGTH];
-	sprintf(taskNumString, "%d", taskNum);
+	sprintf(taskNumString, "%d", D.list[taskNum]);
 	if(ret<0){
 			//error###
 	}
@@ -38,7 +38,7 @@ pid_t startTask(int taskNum){
 			return ret;
 	}
 	if(ret==0){
-			execl(appComputeName, taskNumString);
+			execl(appComputeName, appComputeName, taskNumString, NULL);
 	}
 	return -1;
 }
@@ -116,7 +116,7 @@ void task_rolling(){
 											   	  }
 												  time_t t;
 												  time(&t);
-												  fprintf(fpLog,"at %s", ctime(&t));
+												  fprintf(fpLog," at %s", ctime(&t));
 											   	  status=NODE_COMPUTING;
 											 }else{
 												 //just wait

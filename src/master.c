@@ -18,6 +18,7 @@ FILE *fpLog;
 
 void client_init(){
 	char appInitName[MAX_LENGTH]={0};
+	strcat(appInitName, "./");
 	strcat(appInitName, appName);
 	strcat(appInitName, "_init");
 	int ret=system(appInitName);
@@ -99,6 +100,7 @@ void update_master_info(int operation, int par1){
 			}
 	}
 }
+
 void config_init(){
 	char appConfigResultName[MAX_LENGTH]={0};
 
@@ -244,6 +246,7 @@ void finishAll(){
 								}
 						}
 				}
+				printf("suc=%d TotalHostNum=%d\n", suc, TotalHostNum);
 				if(suc==TotalHostNum){
 		
 						return ;
@@ -251,6 +254,7 @@ void finishAll(){
 		}
 }
 void finishMaster(){
+		
 		time_t t;
 		time(&t);
 		fprintf(fpLog, "\n");
@@ -278,6 +282,7 @@ void finishMaster(){
 				}
 		}
 		fprintf(fpLog, "\n");
+		fflush(fpLog);
 }
 
 void doMaster(int argc, char* argv[]){
@@ -302,8 +307,11 @@ void doMaster(int argc, char* argv[]){
 		}
 	}
 
+
 	finishAll();
 	finishMaster();
+	printf("do Master return\n");
+
 	//upload_master_record();//上传记录:7
 	//end();//结束计算：8
 }

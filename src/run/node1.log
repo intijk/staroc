@@ -1,13 +1,8 @@
-Node 1 started at Wed Apr 11 22:03:32 2012
+Node 1 started at Tue Apr 24 08:31:19 2012
 
-Received Task: 1at Wed Apr 11 22:03:32 2012
-Start task 1 at Wed Apr 11 22:03:32 2012
-Finish task 1 , result: SUCCESS at Wed Apr 11 22:03:32 2012
-Return finish , now being idle.
-
-Received Task: 4at Wed Apr 11 22:03:32 2012
-Start task 4 at Wed Apr 11 22:03:32 2012
-Finish task 4 , result: SUCCESS at Wed Apr 11 22:03:32 2012
+Received Task: 1 at Tue Apr 24 08:31:19 2012
+Start task 1 at Tue Apr 24 08:31:19 2012
+Finish task 1 , result: SUCCESS at Tue Apr 24 08:31:19 2012
 Return finish , now being idle.
 
 Receive exit notification , exiting ... 
