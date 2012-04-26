@@ -123,9 +123,9 @@ void config_init(){
 	fscanf(fpConfig,"%d",&TimeLimitPerTask);
 	fscanf(fpConfig,"%d",&TotalTimeLimit);
 	NodeL=(NodeInfo*)malloc(sizeof(NodeInfo) * (TotalHostNum+1));
-	memset(NodeL,sizeof(NodeInfo) * (TotalHostNum+1), 0);
+	memset(NodeL,0, sizeof(NodeInfo) * (TotalHostNum+1));
 	TaskL=(TaskInfo*)malloc(sizeof(TaskInfo) * (TotalTaskNum+1));
-	memset(TaskL,sizeof(TaskInfo) * (TotalTaskNum+1), 0);
+	memset(TaskL,0, sizeof(TaskInfo) * (TotalTaskNum+1));
 
 
 	//为简单起见，认为每个任务的时限是相同的，以后会修改	
@@ -148,8 +148,9 @@ void config_init(){
 int getATask(){
 		int i;
 		for(i=1;i<=TotalTaskNum;i++){
+				printf("%d\n", TaskL[i].status);
 				if(TaskL[i].status==TASK_WAITING){
-						return i;
+					return i;
 				}
 		}
 		return 0;
@@ -157,6 +158,7 @@ int getATask(){
 int send_task(int nodeNum){
 	//当前最简单的单一调度算法
 	int taskNum=getATask();	
+	printf("tasknum=%d=============\n",taskNum);
 	if(taskNum==0){
 			//fprintf(fpLog,"no task is waiting,they are working on or done");
 			return RET_FAILED;//no task is waiting,they are working on or done
@@ -303,10 +305,9 @@ void doMaster(int argc, char* argv[]){
 		schedule(TaskL,NodeL);//优先级调度算法：3
 		time(&currentTime);
 		if(currentTime-startTime >=TotalTimeLimit){
-				break;
+			break;
 		}
 	}
-
 
 	finishAll();
 	finishMaster();
