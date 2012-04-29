@@ -5,6 +5,11 @@
 #include <mpi.h>
 #include "include/definition.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+
 
 char* appName;//Client Application Name
 int TotalHostNum; //Total cpu num, where in 'mpirun -np TotalHostsNum'
@@ -21,6 +26,12 @@ void client_init(){
 	strcat(appInitName, "./");
 	strcat(appInitName, appName);
 	strcat(appInitName, "_init");
+	//文件不存在,表示用户只想执行子程序, 没有初始化程序
+	if((access(appInitName, F_OK) !=0)){
+		printf("%s not exit, skip user init.\n", appInitName);
+		return ;
+	}
+	fflush(stdout);
 	int ret=system(appInitName);
 	if(!(WIFEXITED(ret) && WEXITSTATUS(ret) == RET_SUCCESS)){
 		fprintf(stderr, "Client init %s run error \n", appInitName);
@@ -101,7 +112,7 @@ void update_master_info(int operation, int par1){
 	}
 }
 
-void config_init(){
+void config_init(int argc, char* argv[]){
 	char appConfigResultName[MAX_LENGTH]={0};
 
 	fpLog=fopen("master.log","w");
@@ -115,13 +126,16 @@ void config_init(){
 
 	if(fpConfig==NULL){
 			fprintf(fpLog, "Open %s failed.\n", appConfigResultName);
-			fprintf(stderr, "Open %s failed.\n", appConfigResultName);
-			exit(-1);
-	}
-
-	fscanf(fpConfig,"%d",&TotalTaskNum);
-	fscanf(fpConfig,"%d",&TimeLimitPerTask);
-	fscanf(fpConfig,"%d",&TotalTimeLimit);
+			printf("%s not exit, take default config.\n",appConfigResultName);
+			sscanf(argv[2], "%d", &TotalTaskNum);
+			TotalTaskNum--;
+			TimeLimitPerTask=5;
+			TotalTimeLimit=10;
+	}else{
+		fscanf(fpConfig,"%d",&TotalTaskNum);
+		fscanf(fpConfig,"%d",&TimeLimitPerTask);
+		fscanf(fpConfig,"%d",&TotalTimeLimit);
+	}	
 	NodeL=(NodeInfo*)malloc(sizeof(NodeInfo) * (TotalHostNum+1));
 	memset(NodeL,0, sizeof(NodeInfo) * (TotalHostNum+1));
 	TaskL=(TaskInfo*)malloc(sizeof(TaskInfo) * (TotalTaskNum+1));
@@ -148,7 +162,6 @@ void config_init(){
 int getATask(){
 		int i;
 		for(i=1;i<=TotalTaskNum;i++){
-				printf("%d\n", TaskL[i].status);
 				if(TaskL[i].status==TASK_WAITING){
 					return i;
 				}
@@ -158,7 +171,6 @@ int getATask(){
 int send_task(int nodeNum){
 	//当前最简单的单一调度算法
 	int taskNum=getATask();	
-	printf("tasknum=%d=============\n",taskNum);
 	if(taskNum==0){
 			//fprintf(fpLog,"no task is waiting,they are working on or done");
 			return RET_FAILED;//no task is waiting,they are working on or done
@@ -248,7 +260,6 @@ void finishAll(){
 								}
 						}
 				}
-				printf("suc=%d TotalHostNum=%d\n", suc, TotalHostNum);
 				if(suc==TotalHostNum){
 		
 						return ;
@@ -298,7 +309,7 @@ void doMaster(int argc, char* argv[]){
 
 	printf("Start master...\n");
 	fflush(stdout);
-	config_init();//系统初始化信息:2
+	config_init(argc,argv);//系统初始化信息:2
 	time_t startTime,currentTime;	
 	time(&startTime);
 	while(CompleteTaskNum<TotalTaskNum){
@@ -311,7 +322,6 @@ void doMaster(int argc, char* argv[]){
 
 	finishAll();
 	finishMaster();
-	printf("do Master return\n");
 
 	//upload_master_record();//上传记录:7
 	//end();//结束计算：8

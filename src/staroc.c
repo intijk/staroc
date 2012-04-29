@@ -13,10 +13,13 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	if(rank==0){
 		doMaster(argc,argv);
+		printf("Master return.\n");
+		fflush(stdout);
 	}else{
 		doSlave(rank);
+		printf("slave %d return.\n", rank);
+		fflush(stdout);
 	}
-	printf("------------------------------------\n");
 	MPI_Finalize();
 	return 0;
 }

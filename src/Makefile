@@ -24,4 +24,7 @@ slave:  slave.c
 	mpicc -c slave.c -Wall
 clean:
 	rm -rf staroc-bin *.o
-
+install:
+	cp staroc staroc-bin /bin
+uninstall:
+	rm -f /bin/staroc /bin/staroc-bin
