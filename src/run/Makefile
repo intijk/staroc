@@ -1,2 +1,2 @@
 run: 
-	./staroc my-pic 4
+	./staroc my-pic 100
