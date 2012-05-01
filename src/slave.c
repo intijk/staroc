@@ -166,7 +166,7 @@ void receive_app_info(){
 	MPI_Recv(&appNameLength, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &mpi_status);
 	MPI_Recv(appName, appNameLength, MPI_BYTE, 0,0, MPI_COMM_WORLD, &mpi_status);
 	appName[appNameLength]='\0';
-	sprintf(appComputeName, "%s_compute",appName);
+	sprintf(appComputeName, "./%s_compute",appName);
 }
 void doSlave(int me){
 

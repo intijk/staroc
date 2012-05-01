@@ -1,3 +1,5 @@
 #!/bin/bash
+#$1 is name of client program
+#$2 is number of processors
 echo "mpirun -np $2 staroc-bin $1"
 mpirun -np $2 --hostfile /etc/hydra/hosts staroc-bin $1 $2 
